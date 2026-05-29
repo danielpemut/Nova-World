@@ -1,0 +1,6 @@
+{
+  "name": "Nova Construction",
+  "description": "Professional construction, real estate development, raw materials supply, industrial equipment lease, and real estate loans platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
