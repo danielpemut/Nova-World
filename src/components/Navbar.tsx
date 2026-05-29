@@ -4,16 +4,29 @@
  */
 
 import React, { useState } from 'react';
-import { HardHat, Compass, Percent, Layers, ShieldCheck, Mail, Menu, X, Landmark } from 'lucide-react';
+import { HardHat, Compass, Percent, Layers, ShieldCheck, Mail, Menu, X, Landmark, Bookmark, Scale } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onOpenAssistant: () => void;
   onApplyLoan: () => void;
+  savedCount: number;
+  onOpenSavedDrawer: () => void;
+  compareCount: number;
+  onOpenCompareDrawer: () => void;
 }
 
-export function Navbar({ activeTab, setActiveTab, onOpenAssistant, onApplyLoan }: NavbarProps) {
+export function Navbar({ 
+  activeTab, 
+  setActiveTab, 
+  onOpenAssistant, 
+  onApplyLoan,
+  savedCount,
+  onOpenSavedDrawer,
+  compareCount,
+  onOpenCompareDrawer
+}: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -69,6 +82,36 @@ export function Navbar({ activeTab, setActiveTab, onOpenAssistant, onApplyLoan }
 
           {/* Call to Actions */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Compare Trigger */}
+            <button
+              id="nav-btn-compare"
+              onClick={onOpenCompareDrawer}
+              className="relative p-2 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-amber-500 transition-all duration-300 cursor-pointer"
+              title="Compare selected items"
+            >
+              <Scale size={18} />
+              {compareCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-amber-500 text-zinc-950 font-black text-[9px] w-5 h-5 rounded-full flex items-center justify-center animate-bounce-slow">
+                  {compareCount}
+                </span>
+              )}
+            </button>
+
+            {/* Saved Trigger */}
+            <button
+              id="nav-btn-saved"
+              onClick={onOpenSavedDrawer}
+              className="relative p-2 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-amber-500 transition-all duration-300 cursor-pointer"
+              title="Saved Favorites"
+            >
+              <Bookmark size={18} />
+              {savedCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white font-black text-[9px] w-5 h-5 rounded-full flex items-center justify-center">
+                  {savedCount}
+                </span>
+              )}
+            </button>
+
             <button
               id="nav-btn-loan"
               onClick={onApplyLoan}
@@ -129,6 +172,28 @@ export function Navbar({ activeTab, setActiveTab, onOpenAssistant, onApplyLoan }
             );
           })}
           <div className="pt-4 border-t border-zinc-900 flex flex-col gap-2">
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  onOpenCompareDrawer();
+                  setIsOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-zinc-850 text-xs font-semibold text-zinc-300 bg-zinc-900"
+              >
+                <Scale size={14} className="text-amber-500" />
+                <span>Compare ({compareCount})</span>
+              </button>
+              <button
+                onClick={() => {
+                  onOpenSavedDrawer();
+                  setIsOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-zinc-850 text-xs font-semibold text-zinc-300 bg-zinc-900"
+              >
+                <Bookmark size={14} className="text-red-505 text-red-400" />
+                <span>Saved ({savedCount})</span>
+              </button>
+            </div>
             <button
               onClick={() => {
                 onApplyLoan();

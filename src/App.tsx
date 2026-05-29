@@ -17,13 +17,19 @@ import {
   Search, SlidersHorizontal, HardHat, Compass, ShieldCheck, Landmark, 
   MapPin, Clock, Award, Users, Warehouse, Activity, Star, FileText, 
   CornerDownRight, Percent, ArrowUpRight, Scale, Info, MessageSquareCode,
-  Sparkles, Check, Phone, ArrowRight, Wrench, Package, ArrowUp
+  Sparkles, Check, Phone, ArrowRight, Wrench, Package, ArrowUp, Bookmark, Trash2, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('all');
   
+  // Custom interactive systems state
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+  const [comparedIds, setComparedIds] = useState<string[]>([]);
+  const [savedDrawerOpen, setSavedDrawerOpen] = useState<boolean>(false);
+  const [compareDrawerOpen, setCompareDrawerOpen] = useState<boolean>(false);
+
   // Search and Filter states
   const [keyword, setKeyword] = useState<string>('');
   const [filterPriceRange, setFilterPriceRange] = useState<number>(50000000);
@@ -40,6 +46,42 @@ export default function App() {
   } | null>(null);
 
   const [chatOpen, setChatOpen] = useState<boolean>(false);
+
+  // Helper lookup map for asset entries
+  const allAssetsMap = useMemo(() => {
+    const map = new Map<string, any>();
+    PROPERTIES.forEach(p => map.set(p.id, { ...p, assetType: 'property' }));
+    EQUIPMENTS.forEach(e => map.set(e.id, { ...e, assetType: 'equipment' }));
+    MATERIALS.forEach(m => map.set(m.id, { ...m, assetType: 'material' }));
+    return map;
+  }, []);
+
+  const handleToggleSave = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setSavedIds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleToggleCompare = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setComparedIds(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      } else {
+        if (prev.length >= 3) {
+          return prev;
+        }
+        return [...prev, id];
+      }
+    });
+  };
 
   // Clear all filters
   const handleResetFilters = () => {
@@ -98,6 +140,10 @@ export default function App() {
         setActiveTab={setActiveTab} 
         onOpenAssistant={() => setChatOpen(true)}
         onApplyLoan={() => setActiveTab('loans')}
+        savedCount={savedIds.length}
+        onOpenSavedDrawer={() => setSavedDrawerOpen(true)}
+        compareCount={comparedIds.length}
+        onOpenCompareDrawer={() => setCompareDrawerOpen(true)}
       />
 
       {/* Main Content Areas */}
@@ -384,6 +430,15 @@ export default function App() {
                           <span className="absolute top-3 right-3 bg-amber-500 text-zinc-950 text-[10px] font-extrabold py-1 px-2.5 rounded uppercase tracking-wider">
                             {property.status}
                           </span>
+
+                          {/* Save Asset Toggle */}
+                          <button
+                            onClick={(e) => handleToggleSave(property.id, e)}
+                            className="absolute bottom-3 right-3 p-2 rounded-xl bg-zinc-950/90 border border-zinc-850 hover:bg-zinc-900 text-zinc-400 hover:text-white transition cursor-pointer"
+                            title={savedIds.includes(property.id) ? "Remove from Saved" : "Save to Favorites"}
+                          >
+                            <Bookmark size={14} className={savedIds.includes(property.id) ? "fill-red-500 stroke-red-500 text-red-500" : ""} />
+                          </button>
                         </div>
 
                         <div className="p-5 space-y-3.5">
@@ -417,7 +472,20 @@ export default function App() {
                               </p>
                             </div>
                             
-                            <div className="flex gap-1.5">
+                            <div className="flex gap-1.5 items-center">
+                              {/* Compare Toggle Button */}
+                              <button
+                                onClick={(e) => handleToggleCompare(property.id, e)}
+                                className={`p-2.5 rounded-lg border transition cursor-pointer ${
+                                  comparedIds.includes(property.id)
+                                    ? 'bg-amber-500/10 border-amber-500 text-amber-500'
+                                    : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white'
+                                }`}
+                                title={comparedIds.includes(property.id) ? "Remove from comparison" : "Compare side-by-side"}
+                              >
+                                <Scale size={15} />
+                              </button>
+
                               <button
                                 onClick={() => setSelectedProduct(property)}
                                 className="px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white cursor-pointer"
@@ -487,6 +555,15 @@ export default function App() {
                           <span className="absolute top-3 right-3 bg-amber-500 text-zinc-950 text-[10px] font-extrabold py-1 px-2.5 rounded uppercase tracking-wider">
                             {machinery.status}
                           </span>
+
+                          {/* Save Asset Toggle */}
+                          <button
+                            onClick={(e) => handleToggleSave(machinery.id, e)}
+                            className="absolute bottom-3 right-3 p-2 rounded-xl bg-zinc-950/90 border border-zinc-850 hover:bg-zinc-900 text-zinc-400 hover:text-white transition cursor-pointer"
+                            title={savedIds.includes(machinery.id) ? "Remove from Saved" : "Save to Favorites"}
+                          >
+                            <Bookmark size={14} className={savedIds.includes(machinery.id) ? "fill-red-500 stroke-red-500 text-red-500" : ""} />
+                          </button>
                         </div>
 
                         <div className="p-5 space-y-3.5">
@@ -524,7 +601,20 @@ export default function App() {
                               </p>
                             </div>
                             
-                            <div className="flex gap-1.5">
+                            <div className="flex gap-1.5 items-center">
+                              {/* Compare Toggle Button */}
+                              <button
+                                onClick={(e) => handleToggleCompare(machinery.id, e)}
+                                className={`p-2.5 rounded-lg border transition cursor-pointer ${
+                                  comparedIds.includes(machinery.id)
+                                    ? 'bg-amber-500/10 border-amber-500 text-amber-500'
+                                    : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white'
+                                }`}
+                                title={comparedIds.includes(machinery.id) ? "Remove from comparison" : "Compare side-by-side"}
+                              >
+                                <Scale size={15} />
+                              </button>
+
                               <button
                                 onClick={() => setSelectedProduct(machinery)}
                                 className="px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white cursor-pointer"
@@ -600,6 +690,15 @@ export default function App() {
                           }`}>
                             {material.availability}
                           </span>
+
+                          {/* Save Material Toggle */}
+                          <button
+                            onClick={(e) => handleToggleSave(material.id, e)}
+                            className="absolute bottom-3 right-3 p-2 rounded-xl bg-zinc-950/90 border border-zinc-850 hover:bg-zinc-900 text-zinc-400 hover:text-white transition cursor-pointer"
+                            title={savedIds.includes(material.id) ? "Remove from Saved" : "Save to Favorites"}
+                          >
+                            <Bookmark size={14} className={savedIds.includes(material.id) ? "fill-red-500 stroke-red-500 text-red-500" : ""} />
+                          </button>
                         </div>
 
                         <div className="p-5 space-y-3.5">
@@ -837,6 +936,310 @@ export default function App() {
       >
         <MessageSquareCode size={24} className="stroke-[2.2]" />
       </button>
+
+      {/* Embedded active modals logic */}
+      {chatOpen && <AIAssistant onClose={() => setChatOpen(false)} />}
+
+      {/* Saved Items Right Drawer */}
+      <AnimatePresence>
+        {savedDrawerOpen && (
+          <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+            <div 
+              onClick={() => setSavedDrawerOpen(false)} 
+              className="absolute inset-0 bg-black/75 backdrop-blur-xs transition-opacity cursor-pointer" 
+            />
+            
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-sm bg-zinc-950 border-l border-zinc-900 shadow-2xl z-10 flex flex-col justify-between"
+            >
+              {/* Header */}
+              <div className="p-6 border-b border-zinc-900 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Bookmark className="text-amber-500" size={18} />
+                  <h3 className="text-sm font-black text-white">Saved Favorites</h3>
+                </div>
+                <button 
+                  onClick={() => setSavedDrawerOpen(false)}
+                  className="text-zinc-550 hover:text-white p-2 rounded-lg hover:bg-zinc-900 transition cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* List area */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                {savedIds.length === 0 ? (
+                  <div className="text-center py-20 text-zinc-500 flex flex-col items-center justify-center gap-3">
+                    <Bookmark size={36} className="text-zinc-700 stroke-[1.5]" />
+                    <p className="text-xs font-light">Saved list is empty.</p>
+                    <p className="text-[10px] text-zinc-650 max-w-[200px] leading-relaxed">Save heavy machinery or real estates across listings to access them easily.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {savedIds.map(id => {
+                      const item = allAssetsMap.get(id);
+                      if (!item) return null;
+                      const name = item.name || item.title;
+                      const priceSub = item.ratePeriod ? `/ ${item.ratePeriod}` : (item.unit ? `/ ${item.unit}` : '');
+                      return (
+                        <div key={id} className="bg-zinc-900/40 border border-zinc-900 p-3 rounded-xl flex items-center gap-3 hover:border-zinc-850 transition">
+                          <img 
+                            src={item.image} 
+                            alt={name} 
+                            referrerPolicy="no-referrer"
+                            className="w-12 h-12 rounded bg-zinc-900 border border-zinc-850 object-cover" 
+                          />
+                          <div className="flex-1 text-left min-w-0">
+                            <span className="text-[8px] font-mono text-amber-500 uppercase tracking-wider block">
+                              {item.assetType}
+                            </span>
+                            <h4 className="text-xs font-bold text-white truncate">{name}</h4>
+                            <p className="text-xs font-black text-white mt-0.5">
+                              ${item.price.toLocaleString()}
+                              <span className="text-[10px] text-zinc-500 font-normal ml-0.5">{priceSub}</span>
+                            </p>
+                          </div>
+                          <div className="flex flex-col gap-1 items-end">
+                            <button
+                              onClick={() => {
+                                setSelectedProduct(item);
+                                setSavedDrawerOpen(false);
+                              }}
+                              className="text-[10px] bg-zinc-900 border border-zinc-850 px-2 py-1 rounded text-zinc-300 hover:text-white cursor-pointer"
+                            >
+                              View
+                            </button>
+                            <button
+                              onClick={(e) => handleToggleSave(id, e)}
+                              className="p-1 rounded text-zinc-500 hover:text-red-400 cursor-pointer"
+                              title="Remove"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Actions footer */}
+              {savedIds.length > 0 && (
+                <div className="p-6 bg-zinc-900/20 border-t border-zinc-900 space-y-3">
+                  <button
+                    onClick={() => {
+                      const namesString = savedIds.map(id => {
+                        const item = allAssetsMap.get(id);
+                        return item ? `[${item.assetType?.toUpperCase()}] ${item.name || item.title}` : '';
+                      }).filter(Boolean).join(', ');
+                      
+                      setCurrentInquiry({
+                        id: 'multiple-saved-items',
+                        name: `Multiple Saved Assets: ${namesString}`,
+                        type: 'general'
+                      });
+                      setSavedDrawerOpen(false);
+                    }}
+                    className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs rounded-xl flex items-center justify-center gap-1 transition cursor-pointer"
+                  >
+                    <span>Request Saved Quotes</span>
+                    <ArrowRight size={13} />
+                  </button>
+                  <button
+                    onClick={() => setSavedIds([])}
+                    className="w-full py-1 bg-transparent text-zinc-600 hover:text-zinc-400 text-[10px] font-mono tracking-wider transition cursor-pointer uppercase font-bold"
+                  >
+                    Clear All Saved
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Comparison Matrix Modal */}
+      <AnimatePresence>
+        {compareDrawerOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+            <div className="w-full max-w-4xl bg-zinc-950 border border-zinc-850 rounded-2xl overflow-hidden shadow-2xl relative block text-left">
+              {/* Header */}
+              <div className="p-6 border-b border-zinc-900 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Scale className="text-amber-500" size={18} />
+                  <h3 className="text-lg font-black text-white">Asset Comparison Matrix</h3>
+                </div>
+                <button
+                  onClick={() => setCompareDrawerOpen(false)}
+                  className="text-zinc-400 hover:text-white p-2 rounded-lg hover:bg-zinc-900 transition cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-x-auto">
+                {comparedIds.length === 0 ? (
+                  <div className="text-center py-20 text-zinc-500 flex flex-col items-center justify-center gap-3">
+                    <Scale size={36} className="text-zinc-700 stroke-[1.5]" />
+                    <p className="text-xs font-light">Your comparison list is empty.</p>
+                    <p className="text-[10px] text-zinc-650 max-w-[250px] leading-relaxed">Click the comparison icon on properties or equipment to evaluate specifications side-by-side.</p>
+                  </div>
+                ) : (
+                  <div className="min-w-[600px] space-y-6">
+                    <table className="w-full table-fixed border-collapse">
+                      <thead>
+                        <tr>
+                          <th className="w-1/4 pb-4 border-b border-zinc-900 text-left text-[11px] font-mono text-zinc-500">SPECIFICATIONS PARAMETER</th>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            if (!item) return <th key={id} className="w-1/4 pb-2 border-b border-zinc-900" />;
+                            return (
+                              <th key={id} className="w-1/4 pb-4 border-b border-zinc-900 px-4 text-left">
+                                <div className="space-y-2">
+                                  <span className="inline-block text-[9px] font-mono text-amber-500 uppercase tracking-widest bg-amber-500/10 px-2 py-0.5 rounded">
+                                    {item.assetType?.toUpperCase()}
+                                  </span>
+                                  <h4 className="text-xs font-bold text-white truncate">{item.name || item.title}</h4>
+                                  <button
+                                    onClick={(e) => handleToggleCompare(id, e)}
+                                    className="text-[10px] text-red-400 font-mono hover:underline flex items-center gap-1 cursor-pointer"
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </th>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <th key={idx} className="w-1/4 pb-4 border-b border-zinc-900 px-4" />
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-900/50">
+                        {/* Image row */}
+                        <tr>
+                          <td className="py-4 text-xs font-mono text-zinc-500 font-bold uppercase">Asset Visual</td>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            if (!item) return <td key={id} className="py-4" />;
+                            return (
+                              <td key={id} className="py-4 px-4">
+                                <div className="h-28 rounded-lg overflow-hidden border border-zinc-850 bg-zinc-900">
+                                  <img src={item.image} alt="Catalog preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                </div>
+                              </td>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <td key={idx} className="py-4 px-4 text-center text-xs font-light text-zinc-500 italic">Empty Slot</td>
+                          ))}
+                        </tr>
+                        {/* Status/Category row */}
+                        <tr>
+                          <td className="py-4 text-xs font-mono text-zinc-500 font-bold uppercase">Category Status</td>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            return (
+                              <td key={id} className="py-4 px-4 text-xs font-semibold text-zinc-300">
+                                {item?.category || item?.type} ({item?.status})
+                              </td>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <td key={idx} className="py-4 px-4" />
+                          ))}
+                        </tr>
+                        {/* Price row */}
+                        <tr>
+                          <td className="py-4 text-xs font-mono text-zinc-500 font-bold uppercase">Pricing Valuation</td>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            return (
+                              <td key={id} className="py-4 px-4 text-sm font-black text-amber-500">
+                                ${item?.price.toLocaleString()}
+                                <span className="text-[11px] text-zinc-400 font-light ml-0.5">
+                                  {item?.status === 'For Rent' ? ` / ${item?.ratePeriod || 'day'}` : ''}
+                                </span>
+                              </td>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <td key={idx} className="py-4 px-4" />
+                          ))}
+                        </tr>
+                        {/* Dimensions / Condition row */}
+                        <tr>
+                          <td className="py-4 text-xs font-mono text-zinc-500 font-bold uppercase">Condition / Size</td>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            return (
+                              <td key={id} className="py-4 px-4 text-xs text-zinc-300">
+                                {item?.size || item?.condition || "ASTM Standard N/A"}
+                              </td>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <td key={idx} className="py-4 px-4" />
+                          ))}
+                        </tr>
+                        {/* Specs overview row */}
+                        <tr>
+                          <td className="py-4 text-xs font-mono text-zinc-500 font-bold uppercase">Specifications</td>
+                          {comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            if (!item) return <td key={id} className="py-4 px-4" />;
+                            const activeSpecs = item.specs ? Object.entries(item.specs).map(([k, v]) => `${k}: ${v}`).join(', ') : (item.features ? item.features.join(', ') : item.description);
+                            return (
+                              <td key={id} className="py-4 px-4 text-xs text-zinc-400 line-clamp-3 leading-relaxed mt-1">
+                                {activeSpecs}
+                              </td>
+                            );
+                          })}
+                          {[...Array(3 - comparedIds.length)].map((_, idx) => (
+                            <td key={idx} className="py-4 px-4" />
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div className="flex justify-end gap-3 mt-4 border-t border-zinc-900 pt-4">
+                      <button
+                        onClick={() => setComparedIds([])}
+                        className="px-4 py-2 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition rounded-xl text-xs font-mono uppercase font-bold cursor-pointer"
+                      >
+                        Empty Tray
+                      </button>
+                      <button
+                        onClick={() => {
+                          const savedCompQuotes = comparedIds.map(id => {
+                            const item = allAssetsMap.get(id);
+                            return item ? `[${item.assetType?.toUpperCase()}] ${item.name || item.title}` : '';
+                          }).filter(Boolean).join(', ');
+                          
+                          setCurrentInquiry({
+                            id: 'compared-items-quote',
+                            name: `Comparison Matrix Inquiry: ${savedCompQuotes}`,
+                            type: 'general'
+                          });
+                          setCompareDrawerOpen(false);
+                        }}
+                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 rounded-xl text-xs font-bold transition cursor-pointer"
+                      >
+                        Request Quote for Compared Assets
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Embedded active modals logic */}
       {chatOpen && <AIAssistant onClose={() => setChatOpen(false)} />}

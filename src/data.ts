@@ -17,7 +17,7 @@ export const PROPERTIES: Property[] = [
     title: 'Nova Apex Commercial Tower',
     type: 'Commercial',
     status: 'For Sale',
-    price: 18500000, // Reduced from 45,000,000
+    price: 12800000, // Adjusted and reduced
     location: '450 Skyline Boulevard, Downtown Metro',
     size: '120,400 sqft',
     description: 'A masterpiece of contemporary corporate architecture. This premium 24-story glass tower features smart zoning, climate automation, high-speed fiber trunking, and high-efficiency LEED Gold certificate infrastructure.',
@@ -30,7 +30,7 @@ export const PROPERTIES: Property[] = [
     title: 'Vanguard Industrial Logistics Hub',
     type: 'Commercial',
     status: 'For Rent',
-    price: 14500, // Reduced from 32,000
+    price: 8500, // Adjusted and reduced
     location: 'Port Boulevard Industrial Sector, West Quay',
     size: '45,000 sqft',
     description: 'High-clearance logistics warehouse featuring heavy load-bearing slab foundations, 8 loading docks, separate offices, solar matrix power grids, and close access to marine shipping terminal grids.',
@@ -43,7 +43,7 @@ export const PROPERTIES: Property[] = [
     title: 'Genesis Horizon Development Acres',
     type: 'Land',
     status: 'For Sale',
-    price: 1950000, // Reduced from 6,400,000
+    price: 1200000, // Adjusted and reduced
     location: 'Horizon Expansion Sector Alpha, North Ridge',
     size: '22.5 Acres',
     description: 'Prime, pre-graded land development plots certified for high-density multi-residential or light commercial development. Fully integrated water, wastewater, and power utility channels already laid by Nova Construction.',
@@ -56,7 +56,7 @@ export const PROPERTIES: Property[] = [
     title: 'The Obsidian Residential Compound Plot',
     type: 'Residential',
     status: 'For Sale',
-    price: 680000, // Reduced from 1,850,000
+    price: 420000, // Adjusted and reduced
     location: 'Placid Estates Scenic Drive, South Peak',
     size: '1.2 Acres',
     description: 'Luxury residential plot overlooking the South Cascade lakes. Features pre-excavated foundation site layouts, professional soil structural reports, and a ready-to-build bespoke modern villa structural design plan.',
@@ -69,12 +69,38 @@ export const PROPERTIES: Property[] = [
     title: 'Meridian Heights Commercial Parcel',
     type: 'Commercial',
     status: 'For Sale',
-    price: 3200000, // Reduced from 9,200,000
+    price: 1980000, // Adjusted and reduced
     location: 'Intersection 5, Commercial High Corridor',
     size: '5.4 Acres',
     description: 'Premium commercial corner lot in a rapidly growing high-income zone. Perfect for mixed-use retail centers, enterprise clinical spaces, or premium franchise hubs.',
     features: ['Major Commercial Zoning', 'High Vehicle Traffic Index', 'Dual Road Frontage', 'Comprehensive Soil Clearances', 'Tax Incentive Zone'],
     image: 'https://images.unsplash.com/photo-1590674899484-d564fa7f12e1?q=80&w=800&auto=format&fit=crop', // Land site
+    featured: true
+  },
+  {
+    id: 'prop-6',
+    title: 'Apex Corporate Business Park',
+    type: 'Commercial',
+    status: 'For Rent',
+    price: 3400, // Adjusted and reduced
+    location: '600 Enterprise Parkway, Innovate Ridge',
+    size: '14,200 sqft',
+    description: 'A modular premium corporate estate with dedicated research quadrants, climate-locked storage zones, smart power redundancies, and beautiful private terraces built for professional services scale.',
+    features: ['Double Power Redundancy', 'Private Server Vault', 'Fiber Backbone Hookups', '24/7 Monitored Access', 'Modular Partition Walls'],
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', // Gorgeous high quality commercial glass tower close-up
+    featured: false
+  },
+  {
+    id: 'prop-7',
+    title: 'Horizon Green Residential Estate',
+    type: 'Residential',
+    status: 'For Sale',
+    price: 290000, // Adjusted and reduced
+    location: 'Meadow View Sector 2, Greenwoods',
+    size: '0.8 Acres',
+    description: 'A stellar modern residential plot optimized with retaining walls, pre-vetted foundation leveling, and fully compliant underground electrical piping.',
+    features: ['Soil Stability Certificate', 'Approved Architectural Layout', 'Quiet Suburban Subdivision', 'Dual Road Frontage', 'High Soil Moisture Drainage'],
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop', // Sleek contemporary home
     featured: true
   }
 ];
@@ -84,7 +110,7 @@ export const EQUIPMENTS: Equipment[] = [
     id: 'eq-1',
     name: 'CAT 336 Heavy Excavator',
     status: 'For Rent',
-    price: 420, // Reduced from 950 per day
+    price: 280, // Adjusted and reduced per day
     category: 'Excavation',
     condition: 'Excellent',
     ratePeriod: 'Day',
@@ -102,7 +128,7 @@ export const EQUIPMENTS: Equipment[] = [
     id: 'eq-2',
     name: 'Nova Titan 120t Tower Crane',
     status: 'For Sale',
-    price: 165000, // Reduced from 480,000
+    price: 115000, // Adjusted and reduced
     category: 'Lifting',
     condition: 'Brand New',
     specs: {
@@ -119,7 +145,7 @@ export const EQUIPMENTS: Equipment[] = [
     id: 'eq-3',
     name: 'Cummins QSK60 2000kW Genset',
     status: 'For Rent',
-    price: 550, // Reduced from 1,200 per day
+    price: 380, // Adjusted and reduced per day
     category: 'Power',
     condition: 'Excellent',
     ratePeriod: 'Day',
@@ -137,7 +163,7 @@ export const EQUIPMENTS: Equipment[] = [
     id: 'eq-4',
     name: 'Volvo FMX 460 Tipper Dump Truck',
     status: 'For Sale',
-    price: 62000, // Reduced from 135,000
+    price: 48000, // Adjusted and reduced
     category: 'Hauling',
     condition: 'Excellent',
     specs: {
@@ -147,14 +173,14 @@ export const EQUIPMENTS: Equipment[] = [
       'Drive Configuration': '8x4 Heavy-axle'
     },
     description: 'Brawny construction tipper built to haul massive quarry aggregate and heavy excavation rubble across unstable, unforgiving terrain with low emission output.',
-    image: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=800&auto=format&fit=crop', // Gorgeous yellow heavy truck
+    image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=800&auto=format&fit=crop', // Beautiful heavy hauling truck
     featured: false
   },
   {
     id: 'eq-5',
     name: 'Schwing S58 Concrete Boom Pump',
     status: 'For Rent',
-    price: 850, // Reduced from 1,850 per day
+    price: 585, // Adjusted and reduced per day
     category: 'Concrete',
     condition: 'Good',
     ratePeriod: 'Day',
@@ -165,7 +191,42 @@ export const EQUIPMENTS: Equipment[] = [
       'Pump Output': '213 cubic yards/hr'
     },
     description: 'Long-reach truck-mounted boom pumps ideal for delivering high-volume transit mixes to tall high-rises or complicated highway bridge deck forms.',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop', // Pro concrete mixer / site
+    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop', // Concrete / construction machinery
+    featured: true
+  },
+  {
+    id: 'eq-6',
+    name: 'Case 1150M Earth Crawler Bulldozer',
+    status: 'For Rent',
+    price: 240, // Adjusted and reduced per day
+    category: 'Excavation',
+    condition: 'Excellent',
+    ratePeriod: 'Day',
+    specs: {
+      'Operating Weight': '31,800 lbs',
+      'Net Power': '138 HP',
+      'Blade Capacity': '4.1 cubic yards',
+      'Shoe Width': '22 inches'
+    },
+    description: 'High-torque crawl-tread bulldozer equipped with 6-way variable pitch power angle tilt blades for heavy grading and rough landscape sculpting.',
+    image: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?q=80&w=800&auto=format&fit=crop', // Crawler bulldozer in action
+    featured: false
+  },
+  {
+    id: 'eq-7',
+    name: 'Hamm HD+90i Road Roller Compactor',
+    status: 'For Sale',
+    price: 36000, // Adjusted and reduced
+    category: 'Hauling',
+    condition: 'Excellent',
+    specs: {
+      'Drum Operating Weight': '20,400 lbs',
+      'Drum Width': '66.1 inches',
+      'Centrifugal Force': '120 kN',
+      'Engine Power': '114 HP'
+    },
+    description: 'Double drum vibrating asphalt rollers featuring digital compaction controls, climate-cabin, and variable amplitude settings for high-density road pavements.',
+    image: 'https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=800&auto=format&fit=crop', // Road roller machine working
     featured: true
   }
 ];
@@ -174,7 +235,7 @@ export const MATERIALS: Material[] = [
   {
     id: 'mat-1',
     name: 'Portland Cement Grade 52.5N',
-    price: 5.90, // Reduced from 12.50
+    price: 3.80, // Adjusted and reduced
     unit: 'Bag (94 lbs)',
     category: 'Cement & Concrete',
     description: 'High-early-strength classic cement formulation recommended for structural concrete mixes, structural columns, prestressed members, and robust load bearings.',
@@ -185,7 +246,7 @@ export const MATERIALS: Material[] = [
   {
     id: 'mat-2',
     name: 'ASTM A615 Grade 60 Carbon Steel Rebar',
-    price: 580, // Reduced from 1,150 per ton
+    price: 450, // Adjusted and reduced per ton
     unit: 'Ton',
     category: 'Structural Steel',
     description: 'High tensile reinforcement steel bars. Deformed pattern guarantees supreme bounding with cast-in-place concrete under major stress curves.',
@@ -196,7 +257,7 @@ export const MATERIALS: Material[] = [
   {
     id: 'mat-3',
     name: 'Structural Douglas Fir Timber lumber',
-    price: 390, // Reduced from 840 per MBF
+    price: 260, // Adjusted and reduced per MBF
     unit: 'MBF (Thousand Board Feet)',
     category: 'Timber & Lumber',
     description: 'Select structural grade, kiln-dried timber lumber. Superb fiber integrity, low warping indices, ideal for structural wood framing and modular architectural walls.',
@@ -207,7 +268,7 @@ export const MATERIALS: Material[] = [
   {
     id: 'mat-4',
     name: 'Crushed Basalt Road Base Aggregate',
-    price: 22, // Reduced from 45 per ton
+    price: 12, // Adjusted and reduced per ton
     unit: 'Ton',
     category: 'Aggregates',
     description: 'Sieve-certified 3/4-inch crushed basalt stones with premium fines ratio, producing supreme compaction ratings for heavy-loading road bases and parking pavements.',
@@ -218,12 +279,34 @@ export const MATERIALS: Material[] = [
   {
     id: 'mat-5',
     name: 'Nova High-Performance Liquid Asphalt Binder',
-    price: 320, // Reduced from 720 per ton
+    price: 210, // Adjusted and reduced per ton
     unit: 'Ton',
     category: 'Asphalt',
     description: 'Polymer-modified hot-mix asphalt binder engineered to resist high thermal cracking, moisture damage, and heavy logistics traffic channelization.',
     availability: 'On Order',
-    image: 'https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=800&auto=format&fit=crop', // Paving road engineering machinery
+    image: 'https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=800&auto=format&fit=crop', // Liquid asphalt laying
+    featured: true
+  },
+  {
+    id: 'mat-6',
+    name: 'Nova Super-Strength Clay Brick bundle',
+    price: 125, // Adjusted and reduced per pack
+    unit: 'Pack of 500',
+    category: 'Aggregates',
+    description: 'Oven-baked high density red clay bricks tested for heavy compression loads, boasting supreme thermal insulation ratings and standard ASTM quality thresholds.',
+    availability: 'In Stock',
+    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800&auto=format&fit=crop', // Masonry bricks stacked
+    featured: false
+  },
+  {
+    id: 'mat-7',
+    name: 'Dual-Component Structural Epoxy Adhesive',
+    price: 35, // Adjusted and reduced per case
+    unit: 'Case of 12 Tubes',
+    category: 'Cement & Concrete',
+    description: 'Industrial grade compound formulated for binding steel anchor bolts to cured concrete structures, providing incredible pull-out security ratios.',
+    availability: 'In Stock',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop', // Beautiful abstract industrial epoxy color flow
     featured: true
   }
 ];
